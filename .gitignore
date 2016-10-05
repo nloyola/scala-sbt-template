@@ -1,0 +1,46 @@
+*.class
+*.log
+GPATH
+GRTAGS
+GTAGS
+TAGS
+
+# sbt specific
+dist/*
+target/
+lib_managed/
+src_managed/
+project/boot/
+project/plugins/project/
+
+# play
+evolutions
+
+# Scala-IDE specific
+.scala_dependencies
+/.target
+/bin
+
+# IntelliJ
+.idea*
+
+# AngularJS
+coverage/
+node_modules/
+
+# Others
+email.conf
+.tern-port
+.cache
+.classpath
+.ensime
+.ensime_lucene/
+.project
+.settings/
+.worksheet/
+.chrome/
+documentation/js/
+/app/assets/languages/
+/po
+logback-test.xml
+

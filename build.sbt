@@ -12,33 +12,52 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-// 
-// 
+//
+//
 
 name := "Scala SBT Template"
 
 version := "0.1.0"
 
-scalaVersion := "2.10.3"
+scalaVersion := Option(System.getProperty("scala.version")).getOrElse("2.11.8")
 
 organization := "com.mycode"
 
-libraryDependencies ++= {
-  	Seq(
-  	    "org.specs2" %% "specs2" % "2.3.4" % "test",
-  	    "org.scalatest" % "scalatest_2.10" % "2.0" % "test"
-  	)
-}
+scalacOptions in Compile ++= Seq(
+    "-target:jvm-1.8",
+    "-encoding", "UTF-8",
+    "deprecation",        // warning and location for usages of deprecated APIs
+    "-feature",           // warning and location for usages of features that should be imported explicitly
+    "-language:implicitConversions",
+    "-language:higherKinds",
+    "-language:existentials",
+    "-language:postfixOps",
+    "-unchecked",          // additional warnings where generated code depends on assumptions
+    "-Xlint",
+    "-Ywarn-adapted-args", // Warn if an argument list is modified to match the receiver
+    "-Ywarn-dead-code",
+    "-Ywarn-inaccessible",
+    "-Ywarn-unused-import",
+    "-Ywarn-value-discard" // Warn when non-Unit expression results are unused
+  )
+
+scalacOptions in (Compile,doc) := Seq("-groups", "-implicits")
+
+libraryDependencies ++= Seq(
+    "org.specs2"    %% "specs2-core" % "3.8.5" % "test",
+    "org.scalatest" %% "scalatest"   % "2.2.6" % "test"
+  )
 
 // if you have more than one main method, you can specify which is used when typing 'run' in sbt
 mainClass := Some("com.mycode.App")
 
-resolvers ++= Seq("snapshots"     at "http://oss.sonatype.org/content/repositories/snapshots",
-                "releases"        at "http://oss.sonatype.org/content/repositories/releases"
-                )
- 
+resolvers ++= Seq(
+    "snapshots"  at "http://oss.sonatype.org/content/repositories/snapshots",
+    "releases"   at "http://oss.sonatype.org/content/repositories/releases"
+  )
+
 scalacOptions ++= Seq("-unchecked", "-deprecation")
-	
+
 // seq(ScctPlugin.scctSettings: _*)
 
 // seq(WebPlugin.webSettings: _*)
@@ -50,30 +69,30 @@ scalacOptions ++= Seq("-unchecked", "-deprecation")
 
 
 
-	
-	// https://groups.google.com/forum/?hl=en#!activity/liftweb/Um5ghzYMDUoJ/liftweb/DDTzzxRbCNU/qEo0lIbTv4kJ
-	// needed for javaMail 1.4.4
-	//resolvers += "Java.net Maven2 Repo" at "http://download.java.net/maven/2/"
-		
-	// jettyConfFiles <<= jettyConfFiles(_.copy(env = Some(file(".") / "src" / "test" / "resources" / "jetty.xml" asFile)))
-	
-		// needed to stop a clash between slf4j-log4j12 and logback-classic
-	// ivyXML := <dependencies> 
-    				// <dependency org="eu.medsea.mimeutil" name="mime-util" rev="2.1.3" > 
-      					// <exclude module="slf4j-log4j12" /> 
-    				// </dependency> 
-  				// </dependencies> 
-  
+
+// https://groups.google.com/forum/?hl=en#!activity/liftweb/Um5ghzYMDUoJ/liftweb/DDTzzxRbCNU/qEo0lIbTv4kJ
+// needed for javaMail 1.4.4
+//resolvers += "Java.net Maven2 Repo" at "http://download.java.net/maven/2/"
+
+// jettyConfFiles <<= jettyConfFiles(_.copy(env = Some(file(".") / "src" / "test" / "resources" / "jetty.xml" asFile)))
+
+// needed to stop a clash between slf4j-log4j12 and logback-classic
+// ivyXML := <dependencies>
+// <dependency org="eu.medsea.mimeutil" name="mime-util" rev="2.1.3" >
+// <exclude module="slf4j-log4j12" />
+// </dependency>
+// </dependencies>
+
 // add compile dependencies on some dispatch modules
 // libraryDependencies ++= Seq(
-	// "net.databinder" %% "dispatch-meetup" % "0.7.8",
-	// "net.databinder" %% "dispatch-twitter" % "0.7.8"
+// "net.databinder" %% "dispatch-meetup" % "0.7.8",
+// "net.databinder" %% "dispatch-twitter" % "0.7.8"
 // )
 
 // Set a dependency based partially on a val.
 // {
-  // val libosmVersion = "2.5.2-RC1"
-  // libraryDependencies += "net.sf.travelingsales" % "osmlib" % libosmVersion from "http://downloads.sourceforge.net/project/travelingsales/libosm/"+libosmVersion+"/libosm-"+libosmVersion+".jar"
+// val libosmVersion = "2.5.2-RC1"
+// libraryDependencies += "net.sf.travelingsales" % "osmlib" % libosmVersion from "http://downloads.sourceforge.net/project/travelingsales/libosm/"+libosmVersion+"/libosm-"+libosmVersion+".jar"
 // }
 
 // reduce the maximum number of errors shown by the Scala compiler
@@ -90,11 +109,11 @@ scalacOptions ++= Seq("-unchecked", "-deprecation")
 
 // define the statements initially evaluated when entering 'console', 'console-quick', or 'console-project'
 // initialCommands := """
-  // import System.{currentTimeMillis => now}
-  // def time[T](f: => T): T = {
-    // val start = now
-    // try { f } finally { println("Elapsed: " + (now - start)/1000.0 + " s") }
-  // }
+// import System.{currentTimeMillis => now}
+// def time[T](f: => T): T = {
+// val start = now
+// try { f } finally { println("Elapsed: " + (now - start)/1000.0 + " s") }
+// }
 // """
 
 // set the initial commands when entering 'console' only
@@ -141,8 +160,8 @@ scalacOptions ++= Seq("-unchecked", "-deprecation")
 
 // change the format used for printing task completion time
 // timingFormat := {
-	// import java.text.DateFormat
-	// DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT)
+// import java.text.DateFormat
+// DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT)
 // }
 
 // disable using the Scala version in output paths and artifacts
@@ -209,5 +228,3 @@ logLevel := Level.Info
 //   from the lib_managed/ in sbt 0.7.x.  There is only one
 //   lib_managed/ in the build root (not per-project).
 // retrieveManaged := true
-
-
